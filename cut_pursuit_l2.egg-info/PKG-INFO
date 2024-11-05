@@ -15,7 +15,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: numpy<2.0.0
 Requires-Dist: scipy
-Requires-Dist: maxflow
+Requires-Dist: PyMaxflow
 
 # Cut Pursuit with L2 Norm
 

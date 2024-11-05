@@ -24,6 +24,6 @@ setup(
     install_requires=[
         "numpy<2.0.0",
         "scipy",
-        "maxflow",
+        "PyMaxflow",
     ],
 )
