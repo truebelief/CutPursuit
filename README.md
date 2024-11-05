@@ -2,7 +2,7 @@
 
 A Python implementation of the Cut Pursuit algorithm using L2 norm for graph optimization problems. This package provides working tools for graph partitioning using max-flow/min-cut optimization. While inspired by the original C++ version , this implementation is not an exact replica but more focused on speed optimization.
 
-Some parameters, like the cut-off threshold, have been discarded for simplicity. For the original C++ version of the Cut Pursuit algorithm, see [cut-pursuit repository](https://github.com/loicland/cut-pursuit)..
+Some parameters, like the cut-off threshold, have been discarded for simplicity. For the original C++ version of the Cut Pursuit algorithm, see [cut-pursuit repository](https://github.com/loicland/cut-pursuit).
 
 The main code is contained in **cut_pursuit/cut_pursuit_L2.py**. For those interested in a version closer to the original C++ code, cut_pursuit_L2_cpp_replica.py is also provided.
 
