@@ -2,7 +2,7 @@
 
 A Python implementation of the Cut Pursuit algorithm using L2 norm for graph optimization problems. This package provides working tools for graph partitioning using max-flow/min-cut optimization. While inspired by the original C++ version , this implementation is not an exact replica but more focused on speed optimization.
 
-For the original C++ implementation of the Cut Pursuit algorithm, please refer to the [cut-pursuit repository](https://github.com/loicland/cut-pursuit).
+Some parameters such as the cut-off threshold are discarded for simplicity. For the original C++ implementation of the Cut Pursuit algorithm, please refer to the [cut-pursuit repository](https://github.com/loicland/cut-pursuit).
 
 Several max-flow libraries have been evaluated, including PyMaxflow, SciPy's sparse module, NetworkX, and iGraph. Among these, PyMaxflow demonstrated the fastest performance. Notably, NetworkX offers CUDA support via RAPIDS and cuGraph; however, as of now, max-flow integration is lacking, and Windows support is limited.
 
