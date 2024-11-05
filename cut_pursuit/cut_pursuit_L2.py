@@ -709,8 +709,8 @@ if __name__ == "__main__":
     min_res = 0.05
 
     # Load and process point cloud
-    path_to_pcd_txt = r"data\TestDemo.txt"
-    output_path=r"output\TestDemoRes.txt"
+    path_to_pcd_txt = r"..\data\TestDemo.txt"
+    output_path=r"..\output\TestDemoRes.txt"
 
     # Read LAS file
     pcd=np.loadtxt(path_to_pcd_txt)
