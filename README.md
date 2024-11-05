@@ -2,14 +2,21 @@
 
 A Python implementation of the Cut Pursuit algorithm using L2 norm for graph optimization problems. This package provides working tools for graph partitioning using max-flow/min-cut optimization. While inspired by the original C++ version , this implementation is not an exact replica but more focused on speed optimization.
 
-Some parameters such as the cut-off threshold are discarded for simplicity. For the original C++ implementation of the Cut Pursuit algorithm, please refer to the [cut-pursuit repository](https://github.com/loicland/cut-pursuit).
+Some parameters, like the cut-off threshold, have been discarded for simplicity. For the original C++ version of the Cut Pursuit algorithm, see [cut-pursuit repository](https://github.com/loicland/cut-pursuit)..
 
-Several max-flow libraries have been evaluated, including PyMaxflow, SciPy's sparse module, NetworkX, and iGraph. Among these, PyMaxflow demonstrated the fastest performance. Notably, NetworkX offers CUDA support via RAPIDS and cuGraph; however, as of now, max-flow integration is lacking, and Windows support is limited.
+The main code is contained in **cut_pursuit/cut_pursuit_L2.py**. For those interested in a version closer to the original C++ code, cut_pursuit_L2_cpp_replica.py is also provided.
 
-The Cut Pursuit algorithm provides robust point clustering that preserves cluster shapes and edges, as demonstrated below:
+Various max-flow libraries were tested, including PyMaxflow, SciPy's sparse module, NetworkX, and iGraph. PyMaxflow proved to be the fastest. NetworkX has CUDA support through RAPIDS and cuGraph, but currently lacks max-flow functionality and has limited support on Windows.
+
+## Example
+
+The Cut Pursuit algorithm enables robust point clustering that maintains reasonable shape and boundaries of clusters, as shown in the example below:
+
 <div align="center">
   <img width="340" alt="Cut Pursuit Clustering Example" src="https://github.com/user-attachments/assets/3697909c-2bc4-441a-ac58-4d382bf969e6">
 </div>
+
+I used this algorithm as the initial segmentation step for tree clustering in CloudCompare's [treeiso plugin](https://github.com/truebelief/cc-treeiso-plugin).
 
 ## Installation
 
@@ -73,6 +80,7 @@ cp.set_parameters(
 # Run optimization
 energy_values, computation_times = cp.run()
 ```
+
 
 ## Contributing
 
