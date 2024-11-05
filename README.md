@@ -6,6 +6,10 @@ Some parameters such as the cut-off threshold are discarded for simplicity. For 
 
 Several max-flow libraries have been evaluated, including PyMaxflow, SciPy's sparse module, NetworkX, and iGraph. Among these, PyMaxflow demonstrated the fastest performance. Notably, NetworkX offers CUDA support via RAPIDS and cuGraph; however, as of now, max-flow integration is lacking, and Windows support is limited.
 
+The Cut Pursuit algorithm provides robust point clustering that preserves cluster shapes and edges, as demonstrated below:
+<div align="center">
+  <img width="340" alt="Cut Pursuit Clustering Example" src="https://github.com/user-attachments/assets/3697909c-2bc4-441a-ac58-4d382bf969e6">
+</div>
 
 ## Installation
 
