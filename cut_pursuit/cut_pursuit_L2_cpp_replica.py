@@ -1035,7 +1035,6 @@ def cut_pursuit(n_nodes: int, n_edges: int, n_obs: int,
     cp.parameter.weight_decay = weight_decay
     cp.parameter.kmeans_ite = 8
     cp.parameter.kmeans_resampling = 5
-    # cp.parameter.max_ite_main = 2
     cp.parameter.max_ite_main = 20
     cp.parameter.backward_step = True
     cp.parameter.stopping_ratio = 0.001
@@ -1069,7 +1068,6 @@ def cut_pursuit(n_nodes: int, n_edges: int, n_obs: int,
 
     return solution, components, in_component, np.array(energy_out), np.array(time_out)
 
-# def perform_cut_pursuit(K, regStrength, pc, edgeWeight,Eu,Ev,in_component,components):
 def perform_cut_pursuit(K, lambda_, pc):
     point_count=len(pc)
     if point_count == 0:
@@ -1121,62 +1119,67 @@ def perform_cut_pursuit(K, lambda_, pc):
     return in_component
 
 
+def decimate_pcd(columns: np.ndarray, min_res: float) -> Tuple[np.ndarray, np.ndarray]:
+    """Decimate point cloud to minimum resolution.
 
+    Args:
+        columns (np.ndarray): Point cloud data.
+        min_res (float): Minimum resolution.
 
-
-
-
-def decimate_pcd(columns,min_res):
-    xyz_min = np.min(columns[:, :3], axis=0)
-    xyz_max = np.max(columns[:, :3], axis=0)
-
-    block_shape = np.floor((xyz_max[:3] - xyz_min[:3]) / min_res).astype(np.int32) + 1
-    block_shape = block_shape[[1, 0, 2]]
-    block_x = xyz_max[1] - columns[:, 1]
-    block_y = columns[:, 0] - xyz_min[0]
-    block_z = columns[:, 2] - xyz_min[2]
-    block_ijk = np.floor(np.concatenate([block_x[:, np.newaxis], block_y[:, np.newaxis], block_z[:, np.newaxis]],axis=1) / min_res).astype(np.int32)
-    block_idx = np.ravel_multi_index((np.transpose(block_ijk)).astype(np.int32), block_shape)
-    _, block_idx_uidx, block_inverse_idx = np.unique(block_idx, return_index=True, return_inverse=True)
-    # columns_dec = columns[block_idx_uidx]
-    return block_idx_uidx,block_inverse_idx
-
+    Returns:
+        Tuple[np.ndarray, np.ndarray]: Decimation indices and inverse indices.
+    """
+    _, block_idx_uidx, block_inverse_idx = np.unique(
+        np.floor(columns[:, :3] / min_res).astype(np.int32),
+        axis=0,
+        return_index=True,
+        return_inverse=True
+    )
+    return block_idx_uidx, block_inverse_idx
+    
 if __name__ == "__main__":
-    # Example usage with mock point cloud data
-    # pc = [[0.0, 1.0, 2.0], [1.0, 2.0, 3.0], [2.0, 3.0, 4.0], [3.0, 4.0, 5.0]]  # Replace with actual point cloud data
+    import cProfile
+    import pstats
+    import io
+
+    # Algorithm parameters
     K = 4
-    regStrength = 1.0
-
-
-    import os
-    import laspy
-    # path_to_las = r"..\data\JP10_plot_2cm_test2.las"
-    path_to_las = r"..\data\JP10_plot_2cm_test3.las"
-    # path_to_las = r"F:\prj\CC2\comp\TreeAIBox\test\testCutPursuit\JP10_plot_2cm_test2_treeiso1.las"
-    pcd_basename = os.path.basename(path_to_las)[:-4]
-    las = laspy.read(path_to_las)
-    pcd=np.transpose([las.x,las.y,las.z])
-
-    min_res=0.05
     reg_strength = 1.0
+    min_res = 0.05
 
-    dec_idx_uidx, dec_inverse_idx = decimate_pcd(pcd[:, :3], min_res)  # reduce points first
+    # Load and process point cloud
+    path_to_pcd_txt = r"..\data\TestDemo.txt"
+    output_path=r"..\output\TestDemoRes.txt"
+
+    # Read LAS file
+    pcd=np.loadtxt(path_to_pcd_txt)
+
+    # Decimate point cloud
+    dec_idx_uidx, dec_inverse_idx = decimate_pcd(pcd[:, :3], min_res)
     pcd_dec = pcd[dec_idx_uidx]
 
-    in_component=perform_cut_pursuit(K, regStrength, pcd_dec)
+    # Create profiler
+    pr = cProfile.Profile()
+    pr.enable()
 
-    # labels = perform_fast_cut_pursuit(pcd_dec, k=10, reg_strength=1.0, cutoff=0)
-    # reg_strength = 0.5  # Adjust this parameter to control segmentation granularity
-    #
-    # labels=shortestpath3D(pcd, pcd[:,-1],pcd[:,-2], min_res,max_isolated_distance)
-    #
-    # # pred=np.zeros(len(pcd))
-    # # pred[stem_ind]=labels
-    # # np.savetxt(r"C:\Users\ZXI\Downloads\tmp.txt",np.concatenate([pcd,labels[:,np.newaxis]],axis=-1))
-    las.add_extra_dim(laspy.ExtraBytesParams(name="cutpursuit", type="int32", description="cutpursuit"))
-    las.cutpursuit = in_component[dec_inverse_idx]
-    las.write(r"C:\Users\ZXI\Downloads\JP10_plot_2cm_test3_cutpursuit.laz")
-    # las.write(r"F:\prj\CC2\comp\TreeAIBox\test\testCutPursuit\JP10_plot_2cm_test2_cutpursuit_python.laz")
+    # Time the algorithm
+    t0 = time.time()
+    in_component = perform_cut_pursuit(K, reg_strength, pcd_dec)
+    main_algo_time = time.time() - t0
 
+    pr.disable()
+
+    # Print profiling statistics
+    s = io.StringIO()
+    ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+    ps.print_stats(30)
+
+    print("\n=== Overall Timing ===")
+    print(f"Main algorithm time: {main_algo_time:.2f} seconds")
+    print("\n=== Detailed Function Profiling ===")
+    print(s.getvalue())
+
+    np.savetxt(output_path,np.concatenate([pcd[:,:3],in_component[dec_inverse_idx][:,np.newaxis]],axis=-1),fmt="%.3f %.3f %.3f %d")
+    print(f"\nResult saved to {output_path}")
 
 
