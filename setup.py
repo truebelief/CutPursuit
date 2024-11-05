@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="cut-pursuit-l2",
-    version="0.1.1",
+    version="0.1.2",
     author="Zhouxin Xi",
     author_email="truebelief2010@gmail.com",
     description="A Python implementation of the Cut Pursuit algorithm for graph optimization",
