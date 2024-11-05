@@ -1,3 +1,22 @@
+Metadata-Version: 2.1
+Name: cut-pursuit-l2
+Version: 0.1.1
+Summary: A Python implementation of the Cut Pursuit algorithm for graph optimization
+Home-page: https://github.com/truebelief/CutPursuit/
+Author: Zhouxin Xi
+Author-email: truebelief2010@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<2.0.0
+Requires-Dist: scipy
+Requires-Dist: maxflow
+
 # Cut Pursuit with L2 Norm
 
 A Python implementation of the Cut Pursuit algorithm using L2 norm for graph optimization problems. This package provides working tools for graph partitioning using max-flow/min-cut optimization. While inspired by the original C++ version , this implementation is not an exact replica but more focused on speed optimization.
