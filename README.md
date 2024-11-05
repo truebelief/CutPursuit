@@ -20,7 +20,7 @@ I used this algorithm as the initial segmentation step for tree clustering in Cl
 
 ## Installation
 
-You can install the package via pip:
+You can install the package via pip - [cut-pursuit-l2](https://pypi.org/project/cut-pursuit-l2/):
 
 ```bash
 pip install cut-pursuit-l2
