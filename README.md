@@ -90,7 +90,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## References
 
+If you use this repository, please cite the following paper:
 @Article{landrieu2017cut,
 title={Cut pursuit: Fast algorithms to learn piecewise constant functions on general weighted graphs},
 author={Landrieu, Loic and Obozinski, Guillaume},
